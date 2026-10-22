@@ -1,0 +1,73 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+# 1. Definição da função e parâmetros
+def f(x):
+    return 10 * x[0]**2 + x[1]**2
+
+def grad_f(x):
+    return np.array([20 * x[0], 2 * x[1]])
+
+A = np.array([[20, 0], 
+              [0,  2]])
+
+# 2. Geração do caminho do algoritmo
+x = np.array([1.0, 1.0])
+path = [x.copy()]
+
+for _ in range(15):
+    g = grad_f(x)
+    alpha = np.dot(g, g) / np.dot(g, np.dot(A, g))
+    x = x - alpha * g
+    path.append(x.copy())
+
+path = np.array(path)
+
+# 3. Configuração inicial do Gráfico
+fig, ax = plt.subplots(figsize=(10, 8))
+x1_vals = np.linspace(-1.1, 1.1, 400)
+x2_vals = np.linspace(-1.1, 1.1, 400)
+X1, X2 = np.meshgrid(x1_vals, x2_vals)
+Z = 10 * X1**2 + X2**2
+
+levels = sorted(list(set([f(p) for p in path])))
+ax.contour(X1, X2, Z, levels=levels, colors='gray', alpha=0.5, linewidths=1)
+
+ax.plot(path[0, 0], path[0, 1], 'go', markersize=8, label='Ponto Inicial')
+ax.plot(0, 0, 'b*', markersize=15, label='Mínimo Global')
+
+ax.set_title('Iterações do Gradiente com Busca Exata', fontsize=14)
+ax.set_xlabel('x₁', fontsize=12)
+ax.set_ylabel('x₂', fontsize=12)
+ax.axhline(0, color='black', linewidth=0.5)
+ax.axvline(0, color='black', linewidth=0.5)
+ax.legend(fontsize=10)
+ax.grid(linestyle=':', alpha=0.7)
+ax.axis('equal')
+
+# Elementos visuais que serão atualizados a cada frame
+line, = ax.plot([], [], 'r-', linewidth=2, label='Caminho')
+point, = ax.plot([], [], 'ro', markersize=6)
+
+# 4. Funções de Animação
+def init():
+    line.set_data([], [])
+    point.set_data([], [])
+    return line, point
+
+def update(frame):
+    # Desenha a linha do início até o frame atual
+    line.set_data(path[:frame+1, 0], path[:frame+1, 1])
+    # Desenha a bolinha vermelha na posição atual
+    point.set_data([path[frame, 0]], [path[frame, 1]])
+    return line, point
+
+# 5. Criando a animação (interval=600 milissegundos entre cada iteração)
+ani = FuncAnimation(fig, update, frames=len(path), init_func=init, blit=True, interval=600)
+
+# 6. Salvando como GIF animado
+arquivo_saida = 'animacao_gradiente.gif'
+ani.save(arquivo_saida, writer='pillow', fps=1.5)
+
+print(f"Animação gerada com sucesso e salva como '{arquivo_saida}'.")
