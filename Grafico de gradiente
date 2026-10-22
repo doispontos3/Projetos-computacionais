@@ -1,3 +1,12 @@
+# Esse foi um código que gerei com o Gemini com o 
+# objetivo de visualizar o comportamento do Método do 
+# Gradiente em problema de Programação Não-Linear que o ponto inicial não era um 
+# auto-vetor da Matriz Hessiana da função e o numero de 
+# condicionamento era alto, gerando uma convergência que 
+# demorava infinitamente pro algoritmo chegar na 
+# solução exata (ele ficava basicamente andando ao redor 
+# do mínimo global em passos ortogonais, sem realmente tocar na solução)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
