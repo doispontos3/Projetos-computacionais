@@ -140,7 +140,7 @@ def Simplex(m, n, c, b, A):
                 limitado = True
         if limitado == False:
             print("A solução factivel é ilimitada, portanto a solução é infinita")
-            return
+            return False
         menor_epsilon = float('inf')
         menor_B = 0
         for j in range(m):
@@ -161,3 +161,4 @@ def Simplex(m, n, c, b, A):
         c_B[menor_B] = c_N[menor_N]
         c_N[menor_N] = c_copia
 # e o algoritmo se repete até determinar que a região é ilimitada ou o menor custo relativo seja não-negativo, mostrando que chegamos na solução ótima.
+Resposta = Simplex(m, n, c, b, A)
