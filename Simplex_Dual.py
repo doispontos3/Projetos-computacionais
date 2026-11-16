@@ -1,4 +1,4 @@
-# Antes de implementar nossa função do Simplex dual propriamente dita, vamos implementar funções básicas como uma função de Eliminação de Gauss pra resolver
+# Antes de implementar nossa função do Simplex propriamente dita, vamos implementar funções básicas como uma função de Eliminação de Gauss pra resolver
 # sistemas lineares e outras operações basicas.
 def prod_interno(x, y):
     if len(x) != len(y):
@@ -64,13 +64,14 @@ def Gauss_piv(Ax, B):
     return x
 
 # Vamos computar nossas entradas na forma primal padrão já com as variáveis de folga e em seguida rodar o problema no simplex dual:
-m = int(input()) # Número de restrições (linhas);
-n = int(input()) # Número de variáveis (colunas);
-c = [float(custo) for custo in input().split()] # Vetor dos custos na funcao objetivo a ser minimizada no formato "c_1 c_2 ... c_n";
-b = [float(recurso) for recurso in input().split()] # Vetor dos recursos no formato "b_1 b_2 ... b_m";
+m = int(input("Numero de restrições")) # Número de restrições (linhas);
+n = int(input("Número de variáveis")) # Número de variáveis (colunas);
+c = [float(custo) for custo in input("custos no formato c_1 c_2 ... c_n").split( )] # Vetor dos custos na funcao objetivo a ser minimizada no formato "c_1 c_2 ... c_n";
+b = [float(recurso) for recurso in input("recursos no formato b_1 b_2 ... b_n").split( )] # Vetor dos recursos no formato "b_1 b_2 ... b_m";
 A = [] # Matriz com os coeficientes das nossas restrições.
+print("Linha i da matriz com os coeficientes das restrições no formato a_i1 a_i2 ... a_in. Coloque as linhas m vezes")
 for i in range(m):
-    A_linha = [float(a_ij) for a_ij in input().split()] # Linha i da matriz com os coeficientes das restrições no formato "a_i1 a_i2 ... a_in"
+    A_linha = [float(a_ij) for a_ij in input().split( )] # Linha i da matriz com os coeficientes das restrições no formato "a_i1 a_i2 ... a_in"
     A.append(A_linha)
 # Vamos implementar a função Simplex_dual. Ela será uma alteração da de simplex entregue anteriormente.
 def Simplex_Dual(m, n, c, b, A):
