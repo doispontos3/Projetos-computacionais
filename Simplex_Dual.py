@@ -1,4 +1,4 @@
-# Antes de implementar nossa função do Simplex propriamente dita, vamos implementar funções básicas como uma função de Eliminação de Gauss pra resolver
+# Antes de implementar nossa função do Simplex dual propriamente dita, vamos implementar funções básicas como uma função de Eliminação de Gauss pra resolver
 # sistemas lineares e outras operações basicas.
 def prod_interno(x, y):
     if len(x) != len(y):
@@ -63,7 +63,7 @@ def Gauss_piv(Ax, B):
             x[n-k-1] = (B_copia[n-k-1] - somatorio)/Ax_copia[n-k-1][n-k-1]
     return x
 
-# Vamos computar nossas entradas na forma primal e depois converte-las para a forma dual:
+# Vamos computar nossas entradas na forma primal padrão já com as variáveis de folga e em seguida rodar o problema no simplex dual:
 m = int(input()) # Número de restrições (linhas);
 n = int(input()) # Número de variáveis (colunas);
 c = [float(custo) for custo in input().split()] # Vetor dos custos na funcao objetivo a ser minimizada no formato "c_1 c_2 ... c_n";
@@ -72,18 +72,7 @@ A = [] # Matriz com os coeficientes das nossas restrições.
 for i in range(m):
     A_linha = [float(a_ij) for a_ij in input().split()] # Linha i da matriz com os coeficientes das restrições no formato "a_i1 a_i2 ... a_in"
     A.append(A_linha)
-# Nesse código vamos implementar a versão dual do problema. Primeiro passo é converter o problema pra sua forma dual e, logo em seguida, executar o simplex dual.
-def primal_para_dual(m, n, c, b, A):
-    A = mat_transposta(A)
-    m_copia = m
-    m = n
-    n = m_copia
-    b_copia = b
-    b = c
-    c = b_copia
-    return
-Dual = primal_para_dual(m, n, c, b, A)
-# Vamos implementar a função Simplex_dual. Ela será uma alteração da de simplex_dual entregue anteriormente.
+# Vamos implementar a função Simplex_dual. Ela será uma alteração da de simplex entregue anteriormente.
 def Simplex_Dual(m, n, c, b, A):
     PARE = False
 # Vamos montar nossa partição básica e não-básica inicial (assumindo que a base dual inicial dada seja factivel):
@@ -112,7 +101,7 @@ def Simplex_Dual(m, n, c, b, A):
         N_indice.append(j)
 
     while not PARE == True:
-#Passo 1) callculo da solução básica dual (vetor_lambda) e lista de custos relativos:
+#Passo 1) calculo da solução básica dual (vetor_lambda) e lista de custos relativos:
         B_transposto = mat_transposta(B)
         vetor_lambda = Gauss_piv(B_transposto, c_B)
         c_Nrelativo_lista = []
